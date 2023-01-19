@@ -15,26 +15,34 @@ make_plots <- function(
     elec_nine <-  c("F3", "Fz", "F4", "C3", "Cz", "C4", "P3", "Pz", "P4")
 
     # MODELS
+    # Models: coefficent
     mod <- fread(paste0("../data/", file, "_models.csv"))
     mod$Spec <- factor(mod$Spec, levels = predictor)
-    model_labs <- c("Intercept", "Plausibility", "Distractor Cloze")
-    model_vals <- c("black", "#E349F6", "#00FFFF")
-
-    # Models: coefficent
     coef <- mod[Type == "Coefficient", ]
     coef$Condition <- coef$Spec
-    plot_nine_elec(coef, elec_nine,
-        file = paste0("../plots/", file, "/Waveforms/Coefficients.pdf"),
-        modus = "Coefficient", ylims = c(10, -5.5),
-        leg_labs = model_labs, leg_vals = model_vals)
-    plot_single_elec(coef, "C3",
-        file = paste0("../plots/", file, "/Waveforms/Coefficients_C3_noci.pdf"),
-        modus = "Coefficient", ylims = c(10, -5.5),
-        leg_labs = model_labs, leg_vals = model_vals)
-    plot_single_elec(coef, "Pz", 
-        file = paste0("../plots/", file, "/Waveforms/Coefficients_Pz_noci.pdf"),
-        modus = "Coefficient", ylims = c(10, -5.5),
-        leg_labs = model_labs, leg_vals = model_vals)
+    if (predictor[2] != "ReadingTime") {
+        model_labs <- c("Intercept", "Plausibility", "Distractor Cloze")
+        model_vals <- c("black", "#E349F6", "#00FFFF")
+        plot_nine_elec(coef, elec_nine,
+            file = paste0("../plots/", file, "/Waveforms/Coefficients.pdf"),
+            modus = "Coefficient", ylims = c(10, -5.5),
+            leg_labs = model_labs, leg_vals = model_vals)
+        plot_single_elec(coef, "C3",
+            file = paste0("../plots/", file, "/Waveforms/Coefficients_C3.pdf"),
+            modus = "Coefficient", ylims = c(10, -5.5),
+            leg_labs = model_labs, leg_vals = model_vals)
+        plot_single_elec(coef, "Pz", 
+            file = paste0("../plots/", file, "/Waveforms/Coefficients_Pz.pdf"),
+            modus = "Coefficient", ylims = c(10, -5.5),
+            leg_labs = model_labs, leg_vals = model_vals)
+    } else {
+        model_labs <- c("Intercept", "Reading Time")
+        model_vals <- c("black", "#E349F6")
+        plot_single_elec(coef, "Pz",
+            file = paste0("../plots/", file, "/Waveforms/Coefficients_Pz.pdf"),
+            modus = "Coefficient", ylims = c(11, -5.5),
+            leg_labs = model_labs, leg_vals = model_vals)
+    }
 
     # Models: t-value
     time_windows <- list(c(300, 500), c(600, 1000))
