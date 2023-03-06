@@ -10,7 +10,7 @@ using Combinatorics: combinations
 using CSV: File, write
 using Distributions: cdf, TDist
 using StatsBase: mean, zscore, std
-using LinearAlgebra: cholesky, diag
+using LinearAlgebra: diag
 using CategoricalArrays: cut, levelcode
 
 struct Models
@@ -428,8 +428,8 @@ function standarderror(out_data, out_models, df, models, ind)
     preds = Array(@view df[:,models.Predictors])
 
     # sigma_sq = SSE / (n-numpred)
-    # std_error = sqrt.(sigma_sq .* diag(inv(cholesky)) )
-    std_error = sqrt.(transpose(sum.(eachcol(res.^2)) ./ (nrow(df) - ind.numpred)) .* diag(inv(cholesky(transpose(preds) * preds))))
+    # std_error = sqrt.(sigma_sq .* diag(inv( t(preds) * preds )) )
+    std_error = sqrt.(transpose(sum.(eachcol(res.^2)) ./ (nrow(df) - ind.numpred)) .* diag(inv(transpose(preds) * preds)))
 
     offset = 0
     for (p_num, p) in enumerate(models.Predictors)
