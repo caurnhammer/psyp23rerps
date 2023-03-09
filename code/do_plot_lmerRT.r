@@ -1,4 +1,4 @@
-source("plot_lmerSPR.R")
+source("plot_lmerRT.R")
 
 produce_spr_plots <- function(
     path

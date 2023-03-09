@@ -17,6 +17,18 @@ se <- function(
     }
 }
 
+# Return only the legend of an ggplot object
+get_legend <- function(
+    a_gplot
+) {
+    tmp <- ggplot_gtable(ggplot_build(a_gplot +
+            theme(legend.box = "vertical",
+                  legend.spacing.y = unit(0.005, "inch"))))
+    leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+    legend <- tmp$grobs[[leg]]
+    return(legend)
+}
+
 plot_lmerSPR <- function(
     data,
     DV,
