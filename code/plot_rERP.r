@@ -161,7 +161,9 @@ plot_single_elec <- function(
     tws = list(c(250, 400), c(600, 1000)),
     ci = TRUE,
     leg_labs,
-    leg_vals
+    leg_vals,
+    omit_legend = FALSE,
+    save_legend = FALSE
 ) { 
     if (modus %in% c("Tertile", "Quantile", "Condition")) {
         cols <- c("Spec", "Timestamp", modus)
@@ -191,7 +193,8 @@ plot_single_elec <- function(
                     ylims = ylims, modus = modus, ci = ci,
                     leg_labs = leg_labs, leg_vals = leg_vals)
         }
-    } else if (modus %in% c("Tertile", "Quantile", "Condition", "ConditionQuantile")) {
+    } else if (modus %in% c("Tertile", "Quantile", "Condition",
+        "ConditionQuantile")) {
         for (i in 1:length(e)) {
             varforward <- c(e[i], paste0(e[i], "_CI"))
             plotlist[[i]] <- plot_grandavg_ci(cbind(data[, ..cols],
@@ -202,16 +205,30 @@ plot_single_elec <- function(
     }
 
     gg <- plotlist[[1]]
+    # gg <- gg + guides(color = guide_legend(nrow = length(leg_labs),
+    #         byrow = TRUE))
     gg <- gg + theme(legend.key.size = unit(0.5, 'cm'), #change legend key size
         legend.key.height = unit(0.5, 'cm'), #change legend key height
         legend.key.width = unit(0.5, 'cm'), #change legend key width
-        legend.title = element_text(size = 8), #change legend title font size
-        legend.text = element_text(size = 7))
+        legend.title = element_text(size = 7), #change legend title font size
+        legend.text = element_text(size = 5))
     gg <- gg + theme(plot.title = element_text(size = 7.5))
-    legend <- get_legend(gg)
-    nl <- theme(legend.position = "none")
-    gg <- arrangeGrob(gg + nl + ggtitle(paste0(e, ": ", title)),
+
+    # Option to omit legend and save it separately.
+    if (omit_legend) {
+        if (save_legend) {
+            lgnd <- get_legend(gg)
+            file_trimmed <- strtrim(file, nchar(file)-4)
+            ggsave(paste0(file_trimmed, "_wavelegend.pdf"), lgnd, device = cairo_pdf,
+                    width = 3, height = 0.5)
+        }
+        gg <- gg + theme(legend.position = "none")
+    } else {
+        legend <- get_legend(gg)
+        nl <- theme(legend.position = "none")
+        gg <- arrangeGrob(gg + nl + ggtitle(paste0(e, ": ", title)),
             legend, heights = c(10, 2))
+    }
 
     if (file != FALSE) {
        ggsave(file, gg, device = cairo_pdf, width = 3, height = 3)

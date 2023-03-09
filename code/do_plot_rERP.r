@@ -30,11 +30,13 @@ make_plots <- function(
         plot_single_elec(coef, "C3",
             file = paste0("../plots/", file, "/Waveforms/Coefficients_C3.pdf"),
             modus = "Coefficient", ylims = c(10, -5.5),
-            leg_labs = model_labs, leg_vals = model_vals)
+            leg_labs = model_labs, leg_vals = model_vals,
+            omit_legend = TRUE, save_legend = TRUE)
         plot_single_elec(coef, "Pz", 
             file = paste0("../plots/", file, "/Waveforms/Coefficients_Pz.pdf"),
             modus = "Coefficient", ylims = c(10, -5.5),
-            leg_labs = model_labs, leg_vals = model_vals)
+            leg_labs = model_labs, leg_vals = model_vals,
+            omit_legend = TRUE, save_legend = FALSE)
     } else {
         model_labs <- c("Intercept", "Reading Time")
         model_vals <- c("black", "#E349F6")
@@ -68,7 +70,8 @@ make_plots <- function(
     eeg$Condition <- factor(plyr::mapvalues(eeg$Condition, c(2, 1, 3),
                              c("B", "A", "C")), levels = c("A", "B", "C"))
 
-    data_labs <- c("A", "B", "C")
+    data_labs <- c("A: Plausible", "B: Less plausible, attraction",
+                   "C: Implausible, no attraction")
     data_vals <- c("black", "red", "blue")
 
     # Observed
@@ -87,7 +90,7 @@ make_plots <- function(
             leg_labs = data_labs, leg_vals = data_vals)
 
     plot_topo(obs, file = paste0("../plots/", file, "/Topos/Observed"),
-                tw = c(250, 350), cond_man = "B", cond_base = "A",
+                tw = c(250, 400), cond_man = "B", cond_base = "A",
                 add_title = "\nObserved", omit_legend = TRUE,
                 save_legend = TRUE)
     plot_topo(obs, file = paste0("../plots/", file, "/Topos/Observed"),
@@ -98,7 +101,7 @@ make_plots <- function(
                 tw = c(600, 1000), cond_man = "B", cond_base = "A",
                 add_title = "\nObserved", omit_legend = TRUE)
     plot_topo(obs, file = paste0("../plots/", file, "/Topos/Observed"),
-                tw = c(250, 350), cond_man = "C", cond_base = "A",
+                tw = c(250, 400), cond_man = "C", cond_base = "A",
                 add_title = "\nObserved", omit_legend = TRUE)
     plot_topo(obs, file = paste0("../plots/", file, "/Topos/Observed"),
                 tw = c(300, 500), cond_man = "C", cond_base = "A",
@@ -119,21 +122,24 @@ make_plots <- function(
         est_set <- est[Spec == spec, ]
         spec <- unique(est_set$Spec)
         name <- gsub("\\[|\\]|:|,| ", "", spec)
-        plot_nine_elec(est_set, elec_nine,
-            file = paste0("../plots/", file, "/Waveforms/Estimated_",
-            name, ".pdf"), modus = "Condition", ylims = c(10.5, -5.5),
-            leg_labs = data_labs, leg_vals = data_vals)
-        plot_single_elec(est_set, "Pz",
-            file = paste0("../plots/", file, "/Waveforms/EstimatedPz_",
-            name, ".pdf"), modus = "Condition", ylims = c(10.5, -5.5),
-            leg_labs = data_labs, leg_vals = data_vals,
-            title = paste("Isolated contribution of", predictor[i]))
-        plot_single_elec(est_set, "Fp1",
-            file = paste0("../plots/", file, "/Waveforms/EstimatedFp1_",
-            name, ".pdf"), modus = "Condition", ylims = c(10.5, -5.5),
-            leg_labs = data_labs, leg_vals = data_vals,
-            title = paste("Isolated contribution of", predictor[i]))
-        plot_topo(est_set, 
+        if (i < length(unique(est$Spec))) {
+            plot_single_elec(est_set, "Pz",
+                file = paste0("../plots/", file, "/Waveforms/EstimatedPz_",
+                name, ".pdf"), modus = "Condition", ylims = c(10.5, -5.5),
+                leg_labs = data_labs, leg_vals = data_vals,
+                title = paste("Isolated contribution of", predictor[i]),
+                omit_legend = TRUE, save_legend = FALSE)
+        }
+        else {
+            plot_single_elec(est_set, "Pz",
+                file = paste0("../plots/", file, "/Waveforms/EstimatedPz_",
+                name, ".pdf"), modus = "Condition", ylims = c(10.5, -5.5),
+                leg_labs = data_labs, leg_vals = data_vals,
+                title = paste("Estimated ERPs: ", predictor[i]),
+                omit_legend = TRUE, save_legend = TRUE)
+        }
+
+        plot_topo(est_set,
             file = paste0("../plots/", file, "/Topos/Estimated_", name),
             tw = c(600, 1000), cond_man = "B", cond_base = "A",
             add_title = paste("\nEstimate", pred[i]), omit_legend = TRUE)
@@ -141,26 +147,14 @@ make_plots <- function(
 
     # Residual
     res <- eeg[Type == "res", ]
-    pred <- c("Intercept", "Tar. Plaus.", "Dist. Cloze",
-              "Dist. Cloze + Tar. Plaus.")
-    for (i in seq(1, length(unique(res$Spec)))) {
-        spec <- unique(res$Spec)[i]
-        res_set <- res[Spec == spec, ]
-        spec <- unique(res_set$Spec)
-        name <- gsub("\\[|\\]|:|,| ", "", spec)
-        plot_nine_elec(res_set, elec_nine,
-            file = paste0("../plots/", file, "/Waveforms/Residual_",
-            name, ".pdf"), modus = "Condition", ylims = c(4.7, -4),
-            leg_labs = data_labs, leg_vals = data_vals)
-        plot_single_elec(res_set, "Pz",
-            file = paste0("../plots/", file, "/Waveforms/ResidualPz_",
-            name, ".pdf"), modus = "Condition", ylims = c(4.7, -4),
-            leg_labs = data_labs, leg_vals = data_vals)
-        plot_topo(res_set, 
-            file = paste0("../plots/", file, "/Topos/Residual_", name),
-            tw = c(600, 1000), cond_man = "B", cond_base = "A",
-            add_title = paste("\nEstimate", pred[i]), omit_legend = TRUE)
-    }
+    spec <- unique(est$Spec)[max(length(unique(est$Spec)))]
+    res_set <- res[Spec == spec, ]
+    plot_single_elec(res_set, "Pz",
+        file = paste0("../plots/", file, "/Waveforms/ResidualPz_",
+        name, ".pdf"), modus = "Condition", ylims = c(4.7, -4),
+        leg_labs = data_labs, leg_vals = data_vals,
+        title = paste("Residuals: Observed - Estimated"),
+        omit_legend = TRUE, save_legend = FALSE)
 }
 
 elec_all <- c("Fp1", "Fp2", "F7", "F3", "Fz", "F4", "F8", "FC5",

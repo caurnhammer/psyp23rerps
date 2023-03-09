@@ -71,6 +71,7 @@ plot_lmerSPR <- function(
             width = .1, size = 0.3)
         p <- p + scale_color_manual(name = "Coefficients",
             values = leg_vals, labels = leg_labs)
+        p <- p + guides(color = guide_legend(nrow = length(leg_labs), byrow = TRUE))
     } else if (DV == "zvalue") {
         p <- p + geom_hline(yintercept = 0, linetype = "dashed")
         p <- p + scale_color_manual(name = "Z-value",
@@ -80,14 +81,13 @@ plot_lmerSPR <- function(
         p <- p + scale_shape_manual(values = c(20, 32),
             name = "Corrected p-values",
             labels = c("Significant", "Nonsignificant"))
-    } else if (grouping == "estimate") {
-        p <- p + scale_color_manual(name = "log(Cloze)",
-        labels = c("Maximum", "Average", "1 SD", "Minimum"),
-        values = c("#ff0000", "#000000", "#E349F6", "#495cf6"))
     }
     else { # RTs, Residuals
         p <- p + scale_color_manual(name = "Condition",
-            labels = c("A", "B", "C"), values = c("black", "red", "blue"))
+            labels = c("A: Plausible", "B: Less plausible, attraction",
+                        "C: Implausible, no attraction"),
+            values = c("black", "red", "blue"))
+        p <- p + guides(color = guide_legend(nrow = 3, byrow = TRUE))
     }
 
     if ((is.vector(ylims) == TRUE) & (DV != "zvalue")) {
@@ -98,7 +98,7 @@ plot_lmerSPR <- function(
         axis.text.x = element_text(size = 7),
         legend.position = "bottom",
         legend.text = element_text(size = 5),
-        legend.title = element_text(size = 4),
+        legend.title = element_text(size = 7),
         legend.box = "vertical",
         legend.spacing.y = unit(-0.2, "cm"),
         legend.margin = margin(0,0,0,0),
