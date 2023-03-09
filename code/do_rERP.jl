@@ -9,7 +9,7 @@ dt = process_data("../data/adbc23_erp.csv", false, models, invert_preds=[:Plaus]
 
 @time fit_models(dt, models, "rERPs_Plaus_Clozedist");
 
-# Across-subjects regression, yielding a single-tvalue for each electrode and time-step
+# Across-subjects regression, yielding a single t-value/p-value for each electrode and time-step
 dts = dt;
 dts.Subject = ones(nrow(dts));
 @time fit_models(dts, models, "rERPs_Plaus_Clozedist_across");

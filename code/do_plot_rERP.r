@@ -23,10 +23,6 @@ make_plots <- function(
     if (predictor[2] != "ReadingTime") {
         model_labs <- c("Intercept", "Plausibility", "Distractor Cloze")
         model_vals <- c("black", "#E349F6", "#00FFFF")
-        plot_nine_elec(coef, elec_nine,
-            file = paste0("../plots/", file, "/Waveforms/Coefficients.pdf"),
-            modus = "Coefficient", ylims = c(10, -5.5),
-            leg_labs = model_labs, leg_vals = model_vals)
         plot_single_elec(coef, "C3",
             file = paste0("../plots/", file, "/Waveforms/Coefficients_C3.pdf"),
             modus = "Coefficient", ylims = c(10, -5.5),
@@ -79,10 +75,6 @@ make_plots <- function(
 
     # Observed
     obs <- eeg[Type == "EEG", ]
-    plot_nine_elec(obs, elec_nine,
-        file = paste0("../plots/", file,  "/Waveforms/Observed.pdf"),
-        modus = "Condition", ylims = c(10.5, -5.5),
-        leg_labs = data_labs, leg_vals = data_vals)
     plot_full_elec(data = obs, e = elec_all, 
         file = paste0("../plots/", file, "/Waveforms/Observed_Full.pdf"),
         title = "Observed ERPs", modus = "Condition",

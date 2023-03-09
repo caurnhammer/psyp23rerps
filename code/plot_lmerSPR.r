@@ -73,7 +73,6 @@ plot_lmerSPR <- function(
             width = .1, size = 0.3)
         p <- p + scale_color_manual(name = "Coefficients",
             values = leg_vals, labels = leg_labs)
-        # p <- p + guides(color = guide_legend(nrow = length(leg_labs), byrow = TRUE))
     } else if (DV == "zvalue") {
         p <- p + geom_hline(yintercept = 0, linetype = "dashed")
         p <- p + scale_color_manual(name = "Z-value",
@@ -89,7 +88,6 @@ plot_lmerSPR <- function(
             labels = c("A: Plausible", "B: Less plausible, attraction",
                         "C: Implausible, no attraction"),
             values = c("black", "red", "blue"))
-        # p <- p + guides(color = guide_legend(nrow = 3, byrow = TRUE))
     }
 
     if ((is.vector(ylims) == TRUE) & (DV != "zvalue")) {
@@ -111,7 +109,6 @@ plot_lmerSPR <- function(
     if (omit_legend) {
         if (save_legend) {
             lgnd <- get_legend(p)
-            # file_trimmed <- strtrim(name, nchar(file) - 4)
             ggsave(paste0("../plots/", name, "/RT_", DV, "_wavelegend.pdf"),
                     lgnd, device = cairo_pdf,
                     width = 3.6, height = 0.5)

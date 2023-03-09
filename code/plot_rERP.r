@@ -505,7 +505,7 @@ generate_topo <- function(
     # Load electrode location data
     elec_locs <- fread("../data/biosemi70elecs.loc", sep = "\t",
                     col.names = c("ElecNum", "Theta", "Radius", "Electrode"))
-    
+
     elec_locs <- elec_locs[Electrode %in% elec]
     elec_locs$RadianTheta <- pi / 180 * elec_locs$Theta
     elec_locs$x <- elec_locs$Radius * sin(elec_locs$RadianTheta)
@@ -687,7 +687,6 @@ plot_rSPR <- function(
     leg_vals
 ) {
     if (modus == "t-value"){
-        #data$sig <- data$sig_average < 0.05
         sig_dt <- data[, c("Region", "Spec", "sig")]
         sig_dt$posit <- rep(seq(ylims[1] + 2, ylims[1] + 4,
                 length = length(unique(data$Spec))),
