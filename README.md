@@ -18,6 +18,7 @@ Assuming an alias called ```julia``` and that data are placed in the ```data/```
 
 ```Rscript do_plot_rERP.r```
 
+```cd ../plots/Figures```
 ```sh ../plots/Figures/mk_figures.sh```
 
 
