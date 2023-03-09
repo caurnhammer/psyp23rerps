@@ -21,6 +21,8 @@ The data are provided as a release within this repository and to be placed in th
 ```StatsBase v0.33.17```
 ```LinearAlgebra (standard)```
 ```CategoricalArrays v0.10.6```
+```MixedModels v4.7.0```
+```PooledArrays v1.4.2```
 
 **```R v4.1.2```**
 
