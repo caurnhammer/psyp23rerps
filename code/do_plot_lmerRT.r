@@ -19,21 +19,24 @@ produce_spr_plots <- function(
 
     # Observed Data
     plot_lmerSPR(lmerSPR, "logRT", yunit = "logRT", title = "Observed RTs",
-        ylims = c(5.50, 5.80), name = path)
+        ylims = c(5.50, 5.80), name = path,
+        omit_legend = TRUE, save_legend = TRUE)
 
     # Estimated RTs
     estimates <- colnames(lmerSPR)[which(grepl("est_", colnames(lmerSPR)))]
     for (x in estimates) {
         plot_lmerSPR(lmerSPR, x, yunit = "logRT", title = "Estimated RTs",
-            ylims = c(5.50, 5.80), name = path)
+            ylims = c(5.50, 5.80), name = path,
+            omit_legend = TRUE, save_legend = FALSE)
     }
 
     # Residuals
     residuals <- colnames(lmerSPR)[which(grepl("res_", colnames(lmerSPR)))]
     for (x in residuals) {
         plot_lmerSPR(lmerSPR, x, yunit = "logRT",
-            title = "Residuals: Plausibility + Cloze Distractor",
-            ylims = c(0.12, -0.12), name = path)
+            title = "Residuals (Observed - Estimated)",
+            ylims = c(0.12, -0.12), name = path,
+            omit_legend = TRUE, save_legend = FALSE)
     }
 
     # Coefficients
@@ -51,7 +54,8 @@ produce_spr_plots <- function(
         .SDcols = c("coefficients", "SE")]
     plot_lmerSPR(data1, "coefficients", yunit = "SPR Coefficients",
         title = "Coefficients", grouping = "Coefficient", name = path,
-        leg_vals = leg_vals, leg_labs = leg_labs)
+        leg_vals = leg_vals, leg_labs = leg_labs,
+        omit_legend = FALSE, save_legend = TRUE)
 
     # Z-values
     zval_cols <- setdiff(colnames(lmerSPR)[grep("zval_",
@@ -71,8 +75,9 @@ produce_spr_plots <- function(
     plot_lmerSPR(data1, "zvalue", yunit="Z-values",
         title="Inferential Statistics", grouping="Zvalue",
         ylims=c(-2, 7), name=path,
-        leg_vals = leg_vals[2:length(leg_labs)], 
-        leg_labs = leg_labs[2:length(leg_labs)])
+        leg_vals = leg_vals[2:length(leg_labs)],
+        leg_labs = leg_labs[2:length(leg_labs)],
+        omit_legend = FALSE, save_legend = TRUE)
 }
 
 produce_spr_plots("rRTs_Plaus_Clozedist")

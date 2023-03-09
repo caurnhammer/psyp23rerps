@@ -38,9 +38,11 @@ quad_density <- function(path, file, leg_labs, leg_vals) {
     ggsave(file, gg, device = cairo_pdf, width = 7, height = 7)
 }
 
+system(paste0("mkdir ../plots/Stimuli"))
+
 quad_density(
     "../data/adbc23_stimuli.csv",
-    "../plots/Figures/adbc23_Densities.pdf",
+    "../plots/Stimuli/adbc23_Densities.pdf",
     c("A: Plausible", "B: Less plausible, attraction", "C: Implausible, no attraction"),
     c("black", "red", "blue")
 )

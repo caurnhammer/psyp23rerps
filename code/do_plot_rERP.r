@@ -15,7 +15,7 @@ make_plots <- function(
     elec_nine <-  c("F3", "Fz", "F4", "C3", "Cz", "C4", "P3", "Pz", "P4")
 
     # MODELS
-    # Models: coefficent
+    # Coefficents
     mod <- fread(paste0("../data/", file, "_models.csv"))
     mod$Spec <- factor(mod$Spec, levels = predictor)
     coef <- mod[Type == "Coefficient", ]
@@ -31,11 +31,13 @@ make_plots <- function(
             file = paste0("../plots/", file, "/Waveforms/Coefficients_C3.pdf"),
             modus = "Coefficient", ylims = c(10, -5.5),
             leg_labs = model_labs, leg_vals = model_vals,
+            title = "Coefficients",
             omit_legend = TRUE, save_legend = TRUE)
         plot_single_elec(coef, "Pz", 
             file = paste0("../plots/", file, "/Waveforms/Coefficients_Pz.pdf"),
             modus = "Coefficient", ylims = c(10, -5.5),
             leg_labs = model_labs, leg_vals = model_vals,
+            title = "Coefficients",
             omit_legend = TRUE, save_legend = FALSE)
     } else {
         model_labs <- c("Intercept", "Reading Time")
@@ -43,6 +45,7 @@ make_plots <- function(
         plot_single_elec(coef, "Pz",
             file = paste0("../plots/", file, "/Waveforms/Coefficients_Pz.pdf"),
             modus = "Coefficient", ylims = c(11, -5.5),
+            title = "Coefficients",
             leg_labs = model_labs, leg_vals = model_vals)
     }
 
@@ -135,7 +138,7 @@ make_plots <- function(
                 file = paste0("../plots/", file, "/Waveforms/EstimatedPz_",
                 name, ".pdf"), modus = "Condition", ylims = c(10.5, -5.5),
                 leg_labs = data_labs, leg_vals = data_vals,
-                title = paste("Estimated ERPs: ", predictor[i]),
+                title = paste("Estimated ERPs"),
                 omit_legend = TRUE, save_legend = TRUE)
         }
 
@@ -153,7 +156,7 @@ make_plots <- function(
         file = paste0("../plots/", file, "/Waveforms/ResidualPz_",
         name, ".pdf"), modus = "Condition", ylims = c(4.7, -4),
         leg_labs = data_labs, leg_vals = data_vals,
-        title = paste("Residuals: Observed - Estimated"),
+        title = paste("Residuals (Observed - Estimated)"),
         omit_legend = TRUE, save_legend = FALSE)
 }
 

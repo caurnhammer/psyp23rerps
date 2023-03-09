@@ -80,9 +80,15 @@ plot_grandavg_ci <- function(
 
     # For all plots
     if (ci == TRUE) {
-    p <- p + geom_ribbon(aes(x = Timestamp,
-        ymax = V + V_CI, ymin = V - V_CI), alpha = 0.20, color = NA)
+        if (modus == "Coefficient") {
+            p <- p + geom_ribbon(aes(x = Timestamp,
+                ymax = V + V_CI, ymin = V - V_CI), alpha = 0.12, color = NA)
+        } else {
+            p <- p + geom_ribbon(aes(x = Timestamp,
+                ymax = V + V_CI, ymin = V - V_CI), alpha = 0.15, color = NA)
+        }
     }
+
     p <- p + geom_hline(yintercept = 0, linetype = "dashed")
     p <- p + geom_vline(xintercept = 0, linetype = "dashed")
     p <- p + theme(panel.background = element_rect(fill = "#FFFFFF",
@@ -204,6 +210,7 @@ plot_single_elec <- function(
         }
     }
 
+    # theme formatting
     gg <- plotlist[[1]]
     # gg <- gg + guides(color = guide_legend(nrow = length(leg_labs),
     #         byrow = TRUE))
@@ -218,18 +225,23 @@ plot_single_elec <- function(
     if (omit_legend) {
         if (save_legend) {
             lgnd <- get_legend(gg)
-            file_trimmed <- strtrim(file, nchar(file)-4)
-            ggsave(paste0(file_trimmed, "_wavelegend.pdf"), lgnd, device = cairo_pdf,
-                    width = 3, height = 0.5)
+            file_trimmed <- strtrim(file, nchar(file) - 4)
+            ggsave(paste0(file_trimmed, "_wavelegend.pdf"),
+                    lgnd, device = cairo_pdf,
+                    # width = 1.75, height = 3)
+                    width = 3.5, height = 0.5)
         }
         gg <- gg + theme(legend.position = "none")
+        gg <- arrangeGrob(gg + ggtitle(paste0(e, ": ", title)),
+                heights = c(10, 0.25))
     } else {
         legend <- get_legend(gg)
         nl <- theme(legend.position = "none")
         gg <- arrangeGrob(gg + nl + ggtitle(paste0(e, ": ", title)),
-            legend, heights = c(10, 2))
+        legend, heights = c(10, 2))
     }
 
+    # Save to pdf or return
     if (file != FALSE) {
        ggsave(file, gg, device = cairo_pdf, width = 3, height = 3)
     } else {
