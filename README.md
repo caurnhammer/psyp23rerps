@@ -6,9 +6,24 @@ Code and data to reproduce the analyses reported by Aurnhammer et al., 2023, Psy
 The ```code/``` directory contains collection of functions implementing and running the regression analyses. Run the ```do_*``` scripts, to run the main analyses.
 Regressions are computed in ```julia```, visualisation and multiple comparisons correction are implemented in ```R```. ImageMagick shell commands are used to combine graphs into the final figures as published in the article.
 
+Assuming an alias called ```julia``` and that data are placed in the ```data/``` directory, running the following commands from the ```code/``` replicates the analyses.
+
+```julia do_lmerRT.jl```
+
+```julia do_rERP.jl```
+
+```Rscript stimuli_densities.r```
+
+```Rscript do_plot_lmerRT.r```
+
+```Rscript do_plot_rERP.r```
+
+```sh ../plots/Figures/mk_figures.sh```
+
+
 # Data
 
-The data are provided as a release within this repository and to be placed in the ```data/``` directory.
+The data are provided as a release within this repository and are to be placed in the ```data/``` directory.
 
 # Language and package versions
 
