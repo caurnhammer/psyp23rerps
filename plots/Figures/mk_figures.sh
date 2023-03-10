@@ -33,7 +33,7 @@ convert	-density 1000 \
 	../rRTs_PrecritRT_Plaus_Clozedist/RT_coefficients.pdf \
 	../rRTs_PrecritRT_Plaus_Clozedist/RT_zvalue.pdf \
 	+append -page 400x200 \
-	RT_Precrti_coefficients_zvalue.pdf
+	RT_Precrit_coefficients_zvalue.pdf
 
 # Copy/create ERP graphs
 cp ../rERPs_Plaus_Clozedist/Waveforms/Observed_Full.pdf ERP_Observed_Full.pdf
