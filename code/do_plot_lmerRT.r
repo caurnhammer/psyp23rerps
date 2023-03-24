@@ -6,7 +6,7 @@ produce_spr_plots <- function(
     lmerSPR <- fread(paste0("../data/", path, ".csv"))
 
     # make dirs
-    system(paste0("mkdir ../plots/", path))
+    system(paste0("mkdir -p ../plots/", path))
 
     if (grepl("PrecritRT", path)) {
         leg_vals <- c("#000000", "red", "#E349F6", "#00FFFF")

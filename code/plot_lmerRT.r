@@ -78,13 +78,14 @@ plot_lmerSPR <- function(
     p <- p + theme_minimal()
     if (!(DV %in% c("zvalue", "coefficients"))) {
         p <- p + geom_errorbar(aes(ymin = DV - SE, ymax = DV + SE),
-            width = .1, size = 0.3)
+            width = .1, linewidth = 0.3)
     }
     if (DV == "coefficients") {
         p <- p + geom_errorbar(aes(ymin = DV - SE, ymax = DV + SE),
-            width = .1, size = 0.3)
+            width = .1, linewidth = 0.3)
         p <- p + scale_color_manual(name = "Coefficients",
             values = leg_vals, labels = leg_labs)
+        p <- p + guides(color = guide_legend(nrow = 2, byrow = TRUE))
     } else if (DV == "zvalue") {
         p <- p + geom_hline(yintercept = 0, linetype = "dashed")
         p <- p + scale_color_manual(name = "Z-value",
