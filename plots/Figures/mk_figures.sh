@@ -121,15 +121,15 @@ convert -density 250 \
 	-background white -alpha remove -alpha off \
 	ERP_Estimated_Topos_B.png
 
-convert -density 500 \
-	multistreams.pdf \
-	-background white -alpha remove -alpha off \
-	multistreams.png
+# convert -density 500 \
+# 	multistreams.pdf \
+# 	-background white -alpha remove -alpha off \
+# 	multistreams.png
 
-convert -density 500 \
-	RI_model.pdf \
-	-background white -alpha remove -alpha off \
-	RI_model.png
+# convert -density 500 \
+# 	RI_model.pdf \
+# 	-background white -alpha remove -alpha off \
+# 	RI_model.png
 
 # remove tmp
 rm -r tmp
