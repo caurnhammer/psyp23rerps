@@ -8,6 +8,7 @@ dt = read_spr_data("../data/adbc23_spr.csv");
 before = nrow(combine(groupby(dt, [:Condition, :Item, :Subject]), [:ReadingTime => mean => :ReadingTime]));
 dt = exclude_trial(dt[((dt.Region .!= "Pre-critical_2")),:], 50, 2500, 50, 6000);
 after = nrow(combine(groupby(dt, [:Condition, :Item, :Subject]), [:ReadingTime => mean => :ReadingTime]))
+before - after
 round((before - after) / before * 100, digits=2)
 
 ## Model Preparation
